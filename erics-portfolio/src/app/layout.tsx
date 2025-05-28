@@ -22,7 +22,7 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       <body className="bg-neutral-900 text-neutral-200">
-        
+      <HorizontalNav />
         <main className="flew-grow pt-16">
           {children} { /* when you visit / (the homepage), content rendered by "src/app/page.tsx" is passed as children to Root Layout here
                         When you visit /about, content rendered by "src/app/about/page.tsx" is passed as children to rootlayout */}
