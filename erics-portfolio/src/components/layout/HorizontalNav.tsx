@@ -4,10 +4,10 @@ import Link from 'next/link';
 import React from 'react';
 
 const navLinks = [
-    {name: "About", href: "/about"},
-    {name: "Projects", href: "/projects"},
-    {name: "Skills", href: "/skills"},
-    {name: "Contact", href: "/contact"},
+    {name: "About", href: "/About"},
+    {name: "Projects", href: "/Projects"},
+    {name: "Skills", href: "/Skills"},
+    {name: "Contact", href: "/Contact"},
 ];
 
 export default function HorizontalNav() {
