@@ -12,17 +12,17 @@ export default function IntroScreen({ onComplete }: IntroScreenProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
 
-    const text_pt1 = "Welcome,";
-    const text_pt2 = " I'm Eric and this is my portfolio.";
+    const text_pt1 = "wake up user,";
+    const text_pt2 = " its time to view Eric's portfolio.";
     const fullText = text_pt1 + text_pt2;
-    const speed = 125;
+    const speed = 100;
     const pauseDuration = 1500
 
     useEffect(() => {
         if (isPaused) return;
         if (currentIndex < fullText.length) {
             // Set a timer (setTimeout). After 'speed' milliseconds.
-            const timeoutId = setTimeout(() => {
+            const timeoutId = setTimeout(() => {    // first arg is the callback function we define, second is speed.
                 // add the next char to 'displayedText'
                 setDisplayedText((prevText) => prevText + fullText[currentIndex]);
                 // and move to the next char index, triggering the useEffect again. 
@@ -31,11 +31,13 @@ export default function IntroScreen({ onComplete }: IntroScreenProps) {
                 if (currentIndex + 1 === text_pt1.length) {
                     setIsPaused(true);
 
-                    setTimeout(() => {
+                    setTimeout(() => { //nested timeout, does the same thing, callback function just sets paused to False
+                        // after timeout is complete. 
                         setIsPaused(false);
                     }, pauseDuration);
                 }
-            }, speed);
+            }, speed); // SetTimeout is a built in JS function that schedules a funct to run after a delay
+            // the function is what we pass in via {} and the delay is speed. 
 
             // Clean up function
             // if component unloads before the timer finishes, clear it
@@ -55,7 +57,7 @@ export default function IntroScreen({ onComplete }: IntroScreenProps) {
 
     return (
         // Section: Dark, full height, centered.
-        <section className="min-h-screen flex flex-col justify-center items-center text-center p-8 bg-gray-900 text-white">
+        <section className="min-h-screen flex flex-col justify-center items-center text-center p-8 bg-black text-white">
           {/* Typing Animation Display */}
           <div className="font-mono text-4xl md:text-6xl text-black-400 mb-8">
             {displayedText}
@@ -64,8 +66,6 @@ export default function IntroScreen({ onComplete }: IntroScreenProps) {
                <span className="inline-block bg-current w-3 h-[1em] ml-1 animate-pulse"></span>
             )}
           </div>
-          {/* We REMOVED the button and conditional rendering from here,
-              because page.tsx will handle what comes next. */}
         </section>
       );
     }
