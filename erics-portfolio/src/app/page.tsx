@@ -3,7 +3,24 @@
 // browser apis like localStorage
 import React, { useState } from 'react';
 import IntroScreen from '@/components/sections/IntroScreen';
+import HorizontalNav from '@/components/layout/HorizontalNav';
 import {motion, AnimatePresence } from 'framer-motion';
+
+function LandingPageContent() {
+  return (
+    <div className="flex-grow p-4 md:p-8 text-center"> {/* This will be styled much more! */}
+      <h1 className="text-5xl font-bold mb-6">Hi, I'm Eric!</h1>
+      <p className="text-xl mb-4">
+        A quick, engaging intro to me. This is where the cool 3D, animations, and imagery will live!
+      </p>
+      {/* Placeholder for interactive elements or visuals */}
+      <div className="my-8 p-10 bg-neutral-800 rounded-lg shadow-xl">
+        [Placeholder for a sick 3D interactive element or animation]
+      </div>
+      <p>More brief info about my core skills or passion...</p>
+    </div>
+  );
+}
 
 export default function Home() {
   // state variable called showIntro which starts at true
@@ -15,35 +32,30 @@ export default function Home() {
   };
 
   // Render logic
-  return (
-    <main>
+  if (showIntro) {
+    return (
       <AnimatePresence mode='wait'>
-        {showIntro ? (
-          <motion.div
-            key="intro"
-            initial={{ opacity: 1}}
-            animate={{opacity: 1}}
-            exit={{opacity: 0, transition: {duration: 0.8}}}
-            >
-              <IntroScreen onComplete={handleIntroComplete} />
-
-            </motion.div>
-          
-        ) : (
-          <motion.div
-              key="main" // <-- Unique key
-              initial={{ opacity: 0 }} // Start invisible
-              animate={{ opacity: 1, transition: { duration: 1.0, delay: 0.5 } }} // <-- Fade in after a short delay
-              exit={{ opacity: 0 }} // (In case you ever switch away again)
-              className="p-10 text-center" // Your main site styles will go here
-            >
-              <h1 className="text-4xl font-bold">Main Site Layout Goes Here!</h1>
-              <p className="mt-4">This is where your vertical nav and sections will appear.</p>
-              {/* TODO: Add VerticalNav and Content Sections here */}
-            </motion.div>
-        )}
+        <motion.div
+          key="intro"
+          exit={{ opacity: 0, transition: { duration: 0.8 } }}
+        >
+          <IntroScreen onComplete={handleIntroComplete} />
+        </motion.div>
       </AnimatePresence>
+    );
+  }
 
-    </main>
+  // When intro is done, render the actual landing page content
+  // This content will be wrapped by RootLayout which includes HorizontalNav and Footer
+  return (
+    <motion.div
+      key="landing"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { duration: 1.0, delay: 0.2 } }}
+      className="flex flex-col flex-grow" // This page's content area
+    >
+      <LandingPageContent />
+    </motion.div>
   );
 }
+

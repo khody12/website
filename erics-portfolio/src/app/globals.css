@@ -13,3 +13,8 @@
   animation: blink 1s step-end infinite;
   /* We use step-end to get a sharp blink, not a fade */
 }
+
+body {
+  @apply bg-neutral-900 text-neutral-200; /* Or bg-black text-gray-100, or your preferred dark shades */
+  /* This sets a site-wide dark background and a light default text color */
+}

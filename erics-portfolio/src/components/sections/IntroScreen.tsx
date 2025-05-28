@@ -18,13 +18,16 @@ export default function IntroScreen({ onComplete }: IntroScreenProps) {
     const speed = 100;
     const pauseDuration = 1500
 
+    //
+
     useEffect(() => {
         if (isPaused) return;
         if (currentIndex < fullText.length) {
             // Set a timer (setTimeout). After 'speed' milliseconds.
+            //set time out takes in a callback function, we define it as the first parameter. we then pass in speed as the time of delay.
             const timeoutId = setTimeout(() => {    // first arg is the callback function we define, second is speed.
                 // add the next char to 'displayedText'
-                setDisplayedText((prevText) => prevText + fullText[currentIndex]);
+                setDisplayedText((prevText) => prevText + fullText[currentIndex]); // we dont need {} here because its a one line update thats just a return. 
                 // and move to the next char index, triggering the useEffect again. 
                 setCurrentIndex((prevIndex) => prevIndex + 1);
 
@@ -51,13 +54,13 @@ export default function IntroScreen({ onComplete }: IntroScreenProps) {
             const completeTimeout = setTimeout(onComplete, 1500);
             return () => clearTimeout(completeTimeout)
         }
-        // The [currentIndex, text, speed, onComplete] array tells React:
+        // The [currentIndex, text, speed, onComplete, etc] array tells React:
         // "Only re-run this effect if one of these values changes."
     }, [currentIndex, fullText, speed, onComplete, isPaused, text_pt1.length, pauseDuration]);
 
     return (
         // Section: Dark, full height, centered.
-        <section className="min-h-screen flex flex-col justify-center items-center text-center p-8 bg-black text-white">
+        <section className="fixed inset-0 z-[100] flex flex-col justify-center items-center text-center p-8 bg-black text-white">
           {/* Typing Animation Display */}
           <div className="font-mono text-4xl md:text-6xl text-black-400 mb-8">
             {displayedText}
