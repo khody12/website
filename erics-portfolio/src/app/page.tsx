@@ -9,7 +9,7 @@ import SkillNode from '@/components/ui/SkillNode';
 
 function LandingPageContent() {
   const nodeData = [
-    { id: 1, text: "React", description: "Building dynamic UIs" },
+    { id: 1, text: "Machine Learning/AI", description: "Building dynamic UIs" },
     { id: 2, text: "Next.js", description: "Full-stack Web Apps" },
     { id: 3, text: "TypeScript", description: "Strongly-typed JS" },
     { id: 4, text: "Python", description: "Data & Automation" },
@@ -57,7 +57,7 @@ function LandingPageContent() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        A quick, engaging intro to me. Welcome to my digital space.
+        I'm an EECS student at UC Berkeley with experience in Machine Learning and AI and an interest in building software and hardware.
       </motion.p>
 
       
@@ -79,6 +79,7 @@ function LandingPageContent() {
               mouseY={mouseY}
               containerHeight={containerDims.height}
               containerWidth={containerDims.width}
+              dragConstraintsRef={constellationRef}
             />
         ))}
       </div>
@@ -105,30 +106,33 @@ export default function Home() {
   };
 
   // Render logic
-  if (showIntro) {
-    return (
-      <AnimatePresence mode='wait'>
+  
+  return ( 
+    // we wrap our two screen in Framers <animatePresence> this allows us to show us the Intro screen first, once showIntro is False which the handleIntroComplete
+    // function will handle, we seamlessly transition into the landing page. We must have keys for the two.
+    <AnimatePresence>
+      {showIntro ? (
         <motion.div
-          key="intro"
-          exit={{ opacity: 0, transition: { duration: 0.8 } }}
-        >
-          <IntroScreen onComplete={handleIntroComplete} />
-        </motion.div>
-      </AnimatePresence>
-    );
-  }
+        key="intro"
+        exit={{ opacity: 0, transition: { duration: 0.8 } }}
+      >
+        <IntroScreen onComplete={handleIntroComplete} />
+      </motion.div>
 
-  // When intro is done, render the actual landing page content
-  // This content will be wrapped by RootLayout which includes HorizontalNav and Footer
-  return (
-    <motion.div
-      key="landing"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1, transition: { duration: 1.0, delay: 0.2 } }}
-      className="flex flex-col flex-grow" // This page's content area
-    >
-      <LandingPageContent />
-    </motion.div>
-  );
+      ) : (
+        <motion.div
+        key="landing"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { duration: 1.0, delay: 0.2 } }}
+        className="flex flex-col flex-grow" // This page's content area 
+      >
+        <LandingPageContent />
+      </motion.div>
+
+      )}
+      
+    </AnimatePresence>
+    );
+  
 }
 
