@@ -148,9 +148,11 @@ function LandingPageContent() {
                 &times; {/* A simple 'X' icon */}
               </button>
               <h2 className="text-2xl md:text-3xl font-bold text-sky-400 mb-3">{selectedNode.text}</h2>
-              <div className="bg-neutral-700 m-5 p-3 rounded-2xl">
-                <img className="w-full h-auto rounded-lg mx-auto" src={selectedNode.image}></img>
-              </div>
+              {selectedNode.image &&
+                <div className="bg-neutral-700 m-5 p-3 rounded-2xl">
+                  <img className="w-full h-auto rounded-lg mx-auto" src={selectedNode.image}></img>
+                </div>
+              }   
               <p className="text-md md:text-lg text-neutral-300 mb-4">{selectedNode.description}</p>
               <div className="border-t border-neutral-700 pt-4">
                 <p className="text-sm md:text-base text-neutral-400 whitespace-pre-line">
