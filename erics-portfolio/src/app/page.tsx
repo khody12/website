@@ -6,6 +6,7 @@ import IntroScreen from '@/components/sections/IntroScreen';
 import HorizontalNav from '@/components/layout/HorizontalNav';
 import {motion, AnimatePresence, useMotionValue } from 'framer-motion';
 import SkillNode from '@/components/ui/SkillNode';
+import useIsMobile from '@/hooks/useIsMobile';
 
 interface NodeDataItem {
   id: number;
@@ -16,6 +17,7 @@ interface NodeDataItem {
 }
 
 function LandingPageContent() {
+  const isMobile = useIsMobile();
   const nodeData: NodeDataItem[] = [
     { id: 1, text: "ML Research", description: "AI implementation and finetuning", details:"I worked at UCSF's Huang Lab to explore the utility of transformer-based gene networks for gene perturbation.", image: "/logos/UCSF_logo.svg" },
     { id: 2, text: "Python/Pytorch", description: "Building Django web apps", details:"I created several full stack web apps using Django and I used PyTorch to create fully connected neural networks to enhance my applications with ML/AI. Check out these projects on Github here."},
@@ -34,12 +36,17 @@ function LandingPageContent() {
   //use something that can be a node data item or null
 
   useEffect(() => {
-    if (constellationRef.current) {
-      setContainerDims({
-        width:constellationRef.current.offsetWidth,
-        height: constellationRef.current.offsetHeight,
-      });
-    }
+    const updateDims = () => {
+      if (constellationRef.current) {
+        setContainerDims({
+          width:constellationRef.current.offsetWidth,
+          height: constellationRef.current.offsetHeight,
+        });
+      }
+    };
+    updateDims();
+    window.addEventListener('resize', updateDims)
+    return () => window.removeEventListener('resize', updateDims);
   }, []);
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -91,10 +98,17 @@ function LandingPageContent() {
       {/* Constellation Container - This is what tracks mouse movement */}
       <div
         ref={constellationRef}
-        onMouseMove={handleMouseMove}
-        className="relative w-4/5 mt-8 mb-8 h-96 md:h-[550px] 
-                   flex flex-wrap justify-center items-center content-center 
-                   gap-6 md:gap-8 p-4"
+        onMouseMove={!isMobile ? handleMouseMove : undefined}
+        className={`
+          relative w-full ${isMobile ? '' : 'md:w-4/5'} /* Simpler width based on isMobile */
+          mt-8 mb-8 
+          ${isMobile ? 'min-h-[auto]' : 'min-h-[300px] sm:min-h-[400px] md:h-96 lg:h-[550px]'} /* Adjust height logic */
+          p-4 
+          ${isMobile 
+            ? 'flex flex-col items-center gap-4' /* Mobile: Vertical list */
+            : 'sm:grid sm:grid-cols-2 sm:gap-6 sm:items-start md:flex md:flex-wrap md:justify-center md:items-center md:content-center md:gap-6 lg:gap-8' /* Tablet/Desktop */
+          }
+        `}
       >
         {nodeData.map((node, index) => (
             <SkillNode
@@ -102,12 +116,13 @@ function LandingPageContent() {
               text={node.text}
               description={node.description}
               index={index}
-              mouseX={mouseX}
-              mouseY={mouseY}
+              mouseX={!isMobile ? mouseX : undefined}
+              mouseY={!isMobile ? mouseY : undefined}
               containerHeight={containerDims.height}
               containerWidth={containerDims.width}
-              dragConstraintsRef={constellationRef}
+              dragConstraintsRef={!isMobile ? constellationRef : undefined}
               onClick={() => handleNodeClick(node)} // when we click a node, it will execute handleNodeClick
+              isMobile={isMobile}
             />
         ))}
       </div>
