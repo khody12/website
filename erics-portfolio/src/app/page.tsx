@@ -12,16 +12,17 @@ interface NodeDataItem {
   text: string;
   description: string;
   details: string; // Added details
+  image?: string; //images are just urls, no img type.
 }
 
 function LandingPageContent() {
   const nodeData: NodeDataItem[] = [
-    { id: 1, text: "ML Research", description: "AI implementation and finetuning", details:"I worked at UCSF's Huang Lab to explore the utility of transformer-based gene networks for gene perturbation." },
+    { id: 1, text: "ML Research", description: "AI implementation and finetuning", details:"I worked at UCSF's Huang Lab to explore the utility of transformer-based gene networks for gene perturbation.", image: "/logos/UCSF_logo.svg" },
     { id: 2, text: "Python/Pytorch", description: "Building Django web apps", details:"I created several full stack web apps using Django and I used PyTorch to create fully connected neural networks to enhance my applications with ML/AI. Check out these projects on Github here."},
     { id: 3, text: "Low Level Programming", description: "C/C++, RISC-V/x86 Assembly", details:"I have taken CS61C and CS161 at Cal that have given me the ability to work on low level code."},
-    { id: 4, text: "React/Next.js", description: "I have utilized React and Next to build my web apps", details:"NAN" },
-    { id: 5, text: "RAG", description: "Building AI systems with helpful insights", details: "I worked at Rapid Reviews through the UC Berkeley URAP program and worked on a novelty feature for assessing preprints powered by RAG." },
-    { id: 6, text: "UI/UX Passion", description: "User-centric Design", details: "NAN" },
+    { id: 4, text: "ML Engineer at FlourishAI", description: "ML Engineer Internship starting June 2025", details:"As an ML Engineering intern, I am working on revolutionizing nutrition care by developing AI to deliver personalized insights and guidance to manage chronic conditions.", image:"/logos/flourishAI_logo.png"},
+    { id: 5, text: "RAG", description: "Building AI systems with helpful insights", details: "I worked at Rapid Reviews through the UC Berkeley URAP program and worked on a novelty feature for assessing preprints powered by RAG." , image: "https://resize-v3.pubpub.org/eyJidWNrZXQiOiJhc3NldHMucHVicHViLm9yZyIsImtleSI6Ijc3cDh2ODVxLzcxNjY4NzE5Mjk2NTY0LnBuZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJoZWlnaHQiOjIwMCwiZml0IjoiaW5zaWRlIiwid2l0aG91dEVubGFyZ2VtZW50Ijp0cnVlfX19"},
+    { id: 6, text: "ML Engineer at Daxe", description: "ML Engineer Internship starting June 2025", details: "As a part time ML Engineering intern, I am working on explainable, AI-powered search and document intelligence.", image: "https://media.licdn.com/dms/image/v2/D560BAQGDdsKRWo7G1A/company-logo_200_200/company-logo_200_200/0/1710351602102/invest_capital_ai_logo?e=1753920000&v=beta&t=gR-kZVr6UjTSIDJc6qzUIIPg82q7JOmEpPTmVo54xFc" },
   ];
 
   const mouseX = useMotionValue(0);
@@ -77,6 +78,14 @@ function LandingPageContent() {
       >
         I'm an EECS student at UC Berkeley with experience in Machine Learning and AI and an interest in building software and hardware.
       </motion.p>
+      <motion.p 
+        className="text-xl md:text-2xl text-neutral-300 mb-12 z-10"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+      >
+        Click on the nodes below to learn more
+      </motion.p>
 
       
       {/* Constellation Container - This is what tracks mouse movement */}
@@ -125,7 +134,7 @@ function LandingPageContent() {
           >
             {/* Modal Content Pane */}
             <motion.div
-              className="bg-neutral-800 p-6 md:p-8 rounded-xl shadow-2xl w-full max-w-lg relative border border-neutral-700"
+              className="bg-neutral-800 p-8 md:p-10 rounded-xl shadow-2xl w-full max-w-lg relative border border-neutral-600"
               initial={{ opacity: 0, scale: 0.7 }}
               animate={{ opacity: 1, scale: 1, transition: { delay: 0.1, duration: 0.3 } }}
               exit={{ opacity: 0, scale: 0.7, transition: { duration: 0.2 } }}
@@ -139,6 +148,9 @@ function LandingPageContent() {
                 &times; {/* A simple 'X' icon */}
               </button>
               <h2 className="text-2xl md:text-3xl font-bold text-sky-400 mb-3">{selectedNode.text}</h2>
+              <div className="bg-neutral-700 m-5 p-3 rounded-2xl">
+                <img className="w-full h-auto rounded-lg mx-auto" src={selectedNode.image}></img>
+              </div>
               <p className="text-md md:text-lg text-neutral-300 mb-4">{selectedNode.description}</p>
               <div className="border-t border-neutral-700 pt-4">
                 <p className="text-sm md:text-base text-neutral-400 whitespace-pre-line">
