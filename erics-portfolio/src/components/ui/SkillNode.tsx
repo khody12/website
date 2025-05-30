@@ -10,10 +10,12 @@ interface SkillNodeProps {
     mouseY: MotionValue<number>
     containerWidth:number;
     containerHeight:number;
-    dragConstraintsRef: RefObject<HTMLDivElement | null>;
+    dragConstraintsRef: RefObject<HTMLDivElement | null>; // RefObject is a container, actual DOM element stored in .current property
+    // <HTMLDivElement | null> tells typescript what kind of value .current of this refobject will hold. null or htmldivelement.
+    onClick: () => void;  // expects a prop named onClick which must be a function, no args, and doesnt return anything.
 }
 
-export default function SkillNode({ text, description, index, mouseX, mouseY, containerWidth, containerHeight, dragConstraintsRef }: SkillNodeProps) {
+export default function SkillNode({ text, description, index, mouseX, mouseY, containerWidth, containerHeight, dragConstraintsRef, onClick }: SkillNodeProps) {
   // calculating motion of the node.
   const x = useMotionValue(0); 
   // useMotionValue is a special state-like object from Framer that can be updated
@@ -34,8 +36,15 @@ export default function SkillNode({ text, description, index, mouseX, mouseY, co
   const childParallaxX = useTransform(mouseX, inputXRange, [-parallaxStrengthX, parallaxStrengthX]);
   const childParallaxY = useTransform(mouseY, inputYRange, [-parallaxStrengthY, parallaxStrengthY]);
 
-  // Use transofmr is a hook that creates a new motion value. input => output
+  // Use transform is a hook that creates a new motion value. input => output
   //
+
+  //the way this works is that this outer motion.div basically handles the base x y position of the node.
+  // so when we drag it, that x and y is updated.
+  // the parallax x and y is going to adjust its value based on the position of the mouse relative to the 
+  // x y position that is defined by the x, y from the outer motion.div. 
+  // this nested structure makes the inner motion.div move relative to the outer motion.div and makes it so that
+  // the two divs arent fighting over the x and y location, the inner div is simply making adjustments to the outer divs placement.
 
   return (
     <motion.div // This outer div is DRAGGABLE
@@ -54,13 +63,14 @@ export default function SkillNode({ text, description, index, mouseX, mouseY, co
         // We put zIndex here for dragging if needed, or whileDrag
       }}
       drag
-      dragConstraints={dragConstraintsRef}
+      dragConstraints={dragConstraintsRef} // dragConstraints uses our HTML Ref to determine boundaries which a node can be dragged.
       dragElastic={0.1}
       dragTransition={{ bounceStiffness: 250, bounceDamping: 25 }}
       whileDrag={{ zIndex: 20 }} // Bring draggable element to front
     >
       {/* This inner div handles the PARALLAX and IDLE animations */}
       <motion.div
+        onClick={onClick}
         className="bg-neutral-800/70 backdrop-blur-sm text-white p-4 md:p-6 rounded-xl shadow-2xl border border-neutral-700 cursor-grab active:cursor-grabbing"
         animate={{ // Continuous "idle" animation
           scale: [1, 1.03, 1],

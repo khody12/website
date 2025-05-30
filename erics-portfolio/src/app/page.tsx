@@ -7,20 +7,30 @@ import HorizontalNav from '@/components/layout/HorizontalNav';
 import {motion, AnimatePresence, useMotionValue } from 'framer-motion';
 import SkillNode from '@/components/ui/SkillNode';
 
+interface NodeDataItem {
+  id: number;
+  text: string;
+  description: string;
+  details: string; // Added details
+}
+
 function LandingPageContent() {
-  const nodeData = [
-    { id: 1, text: "Machine Learning/AI", description: "Building dynamic UIs" },
-    { id: 2, text: "Next.js", description: "Full-stack Web Apps" },
-    { id: 3, text: "TypeScript", description: "Strongly-typed JS" },
-    { id: 4, text: "Python", description: "Data & Automation" },
-    { id: 5, text: "Problem Solver", description: "Analytical Mindset" },
-    { id: 6, text: "UI/UX Passion", description: "User-centric Design" },
+  const nodeData: NodeDataItem[] = [
+    { id: 1, text: "ML Research", description: "AI implementation and finetuning", details:"I worked at UCSF's Huang Lab to explore the utility of transformer-based gene networks for gene perturbation." },
+    { id: 2, text: "Python/Pytorch", description: "Building Django web apps", details:"I created several full stack web apps using Django and I used PyTorch to create fully connected neural networks to enhance my applications with ML/AI. Check out these projects on Github here."},
+    { id: 3, text: "Low Level Programming", description: "C/C++, RISC-V/x86 Assembly", details:"I have taken CS61C and CS161 at Cal that have given me the ability to work on low level code."},
+    { id: 4, text: "React/Next.js", description: "I have utilized React and Next to build my web apps", details:"NAN" },
+    { id: 5, text: "RAG", description: "Building AI systems with helpful insights", details: "I worked at Rapid Reviews through the UC Berkeley URAP program and worked on a novelty feature for assessing preprints powered by RAG." },
+    { id: 6, text: "UI/UX Passion", description: "User-centric Design", details: "NAN" },
   ];
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const [containerDims, setContainerDims] = useState({width: 0, height:0});
   const constellationRef = useRef<HTMLDivElement>(null);
+
+  const[selectedNode, setSelectedNode] = useState<NodeDataItem | null>(null); 
+  //use something that can be a node data item or null
 
   useEffect(() => {
     if (constellationRef.current) {
@@ -38,6 +48,14 @@ function LandingPageContent() {
       mouseX.set(event.clientX - rect.left);
       mouseY.set(event.clientY - rect.top);
     }
+  };
+  // parameter type is specified, name of var is Node and must be type NodeDataItem. we use : for this.
+  const handleNodeClick = (node: NodeDataItem) => {
+    setSelectedNode(node);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedNode(null);
   };
 
   return (
@@ -80,6 +98,7 @@ function LandingPageContent() {
               containerHeight={containerDims.height}
               containerWidth={containerDims.width}
               dragConstraintsRef={constellationRef}
+              onClick={() => handleNodeClick(node)} // when we click a node, it will execute handleNodeClick
             />
         ))}
       </div>
@@ -92,6 +111,44 @@ function LandingPageContent() {
       >
         More brief info about my core skills or passion...
       </motion.p>
+      
+      <AnimatePresence>
+        {selectedNode && ( // if selectedNode==True, then we 
+          <motion.div
+            key="skill-detail-modal"
+            // Overlay styles
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={handleCloseModal} // Close by clicking overlay
+          >
+            {/* Modal Content Pane */}
+            <motion.div
+              className="bg-neutral-800 p-6 md:p-8 rounded-xl shadow-2xl w-full max-w-lg relative border border-neutral-700"
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: 1, scale: 1, transition: { delay: 0.1, duration: 0.3 } }}
+              exit={{ opacity: 0, scale: 0.7, transition: { duration: 0.2 } }}
+              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+            >
+              <button 
+                onClick={handleCloseModal}
+                className="absolute top-3 right-3 text-neutral-400 hover:text-white text-2xl"
+                aria-label="Close skill details"
+              >
+                &times; {/* A simple 'X' icon */}
+              </button>
+              <h2 className="text-2xl md:text-3xl font-bold text-sky-400 mb-3">{selectedNode.text}</h2>
+              <p className="text-md md:text-lg text-neutral-300 mb-4">{selectedNode.description}</p>
+              <div className="border-t border-neutral-700 pt-4">
+                <p className="text-sm md:text-base text-neutral-400 whitespace-pre-line">
+                  {selectedNode.details}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -18,10 +18,9 @@ export default function HorizontalNav() {
         <nav className="sticky top-0 z-50 w-full bg-black/80 backdrop-blur-md shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo/Name on the left */}
           <div className="flex-shrink-0">
             <Link href="/" className="text-2xl font-bold text-white">
-              Eric Khodorenko {/* Replace with Your Name or Initials/Logo */}
+              Eric Khodorenko 
             </Link>
           </div>
 
