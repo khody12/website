@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 
 const navLinks = [
-    {name: "About", href: "/About"},
+    {name: "My Experiences", href: "/About"},
     {name: "Projects", href: "/Projects"},
     {name: "Skills", href: "/Skills"},
     {name: "Contact", href: "/Contact"},
