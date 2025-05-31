@@ -7,7 +7,7 @@ interface EventDetailItemProps {
 }
 
 export default function EventDetailItem({ event, scrollProgress}: EventDetailItemProps) {
-  const { title, details, year, month, scrollTriggerPoint, side } = event;
+  const { title, details, year, month, scrollTriggerPoint, side, image } = event;
 
   // Define the scroll range for this item to be visible/animate
   // e.g., starts appearing slightly before its trigger point, fully visible at trigger, starts fading after.
@@ -54,6 +54,7 @@ export default function EventDetailItem({ event, scrollProgress}: EventDetailIte
       <p className="text-sm text-sky-400 mb-1">{month} {year}</p>
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
       <p className="text-neutral-400 text-sm">{details}</p>
+      {image && <img className=" mt-2 rounded-xl" src={image}></img>}
     </motion.div>
   );
 }
