@@ -1,13 +1,13 @@
 // components/EventDetailItem.tsx (New component)
 import { motion, MotionValue, useTransform } from 'framer-motion';
-import { TimelineEvent } from './types/timeline';
+import { TimelineEvent } from '../../types/timeline';
 interface EventDetailItemProps {
   event: TimelineEvent;
   scrollProgress: MotionValue<number>;
 }
 
 export default function EventDetailItem({ event, scrollProgress}: EventDetailItemProps) {
-  const { title, details, year, month, scrollTriggerPoint, side, image } = event;
+  const { title, details, year, month, scrollTriggerPoint, side, image, link } = event;
 
   // Define the scroll range for this item to be visible/animate
   // e.g., starts appearing slightly before its trigger point, fully visible at trigger, starts fading after.
@@ -41,8 +41,8 @@ export default function EventDetailItem({ event, scrollProgress}: EventDetailIte
 
   return (
     <motion.div
-      className={`absolute w-5/12 md:w-1/3 p-6 bg-neutral-800 rounded-lg shadow-xl my-10
-                  ${side === 'left' ? 'right-[calc(50%+40px)]' : 'left-[calc(50%+40px)]'} 
+      className={`border-2 border-neutral-700 hover:border-sky-700 duration-200 ease-in-out absolute w-5/12 md:w-1/3 p-6 bg-neutral-800 rounded-lg shadow-xl my-10
+                  ${side === 'left' ? 'right-[calc(50%+40px)]' : 'left-[calc(50%+40px)] '} 
                   transform -translate-y-1/2`} // -translate-y-1/2 helps vertically center it against its 'top'
       style={{
         top: topPosition,
@@ -54,7 +54,7 @@ export default function EventDetailItem({ event, scrollProgress}: EventDetailIte
       <p className="text-sm text-sky-400 mb-1">{month} {year}</p>
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
       <p className="text-neutral-400 text-sm">{details}</p>
-      {image && <img className=" mt-2 rounded-xl" src={image}></img>}
+      {image && <a href={link}><img className="mx-auto border-2 border-neutral-700 mt-4 rounded-xl hover:border-sky-400 duration-200 ease-in-out" src={image}></img></a>}
     </motion.div>
   );
 }

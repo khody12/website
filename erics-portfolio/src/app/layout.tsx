@@ -16,6 +16,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Eric Khodorenko's Portfolio",
   description: "Portfolio of UC Berkeley EECS student Eric Khodorenko",
+  icons: {
+    icon : [
+      { url: "/images/myWebsiteLogo.png", sizes:"any", rel:"icon"}
+    ]
+  }
 };
 
 export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode;}>) {

@@ -2,7 +2,7 @@
 
 import { type MotionValue, motion, useTransform } from 'framer-motion';
 // Assuming your TimelineEvent type is in a shared file, or you define a local one:
-import { type TimelineEvent } from './types/timeline'; // Adjust path if your type is elsewhere
+import { type TimelineEvent } from '../types/timeline'; // Adjust path if your type is elsewhere
 
 // This type describes the fields from TimelineEvent that EventMarker actually uses
 interface MarkerSpecificEventData {

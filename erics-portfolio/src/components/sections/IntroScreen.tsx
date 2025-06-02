@@ -13,10 +13,10 @@ export default function IntroScreen({ onComplete }: IntroScreenProps) {
     const [isPaused, setIsPaused] = useState(false);
 
     const text_pt1 = "Hey there!";
-    const text_pt2 = " Come learn a little bit about me and my work.";
+    const text_pt2 = " Come learn a little bit about me.";
     const fullText = text_pt1 + text_pt2;
-    const speed = 50;
-    const pauseDuration = 500
+    const speed = 40;
+    const pauseDuration = 400
 
     //
 
